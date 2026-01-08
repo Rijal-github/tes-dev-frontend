@@ -41,6 +41,8 @@ ChatGPT digunakan sebagai asisten teknis untuk membantu:
 
 5. Apa penyebab error export/import ES Module di React Vite?
 
+6. Saran styling memakai CSS tidak dengan library CSS 
+
 
 
 # React + Vite

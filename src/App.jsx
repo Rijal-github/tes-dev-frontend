@@ -65,108 +65,173 @@ function App() {
       }));
   }
 
+  const [activeMenu, setActiveMenu] = useState("daftar");
+
+  const renderContent = () => {
+    switch (activeMenu) {
+      case "daftar":
+        return (
+          <section className="card">
+            <h2>Daftar Hewan</h2>
+
+            <div className="button-group">
+              <button onClick={addNewPet}>Tambah Hewan Baru</button>
+              <button style={{ marginLeft: "10px" }} onClick={updatePersiaCat}>Ganti Jenis Kucing</button>
+            </div>
+
+            <ul className="pet-list">
+              {pets.map((pet) => (
+                <li key={pet.id} className="pet-item">
+                  <div className="pet-title">
+                    {pet.nama} ({pet.jenis})
+                  </div>
+                  <div className="pet-meta">
+                    <div><strong>Ras:</strong> {pet.ras}</div>
+                    <div><strong>Karakteristik:</strong> {pet.karakteristik}</div>
+                    <div><strong>Kesayangan:</strong> {pet.kesayangan ? "Ya" : "Tidak"}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+
+      case "favorit":
+        return (
+          <section className="card">
+            <h2>Hewan Kesayangan</h2>
+
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="asc">Ascending (A-Z)</option>
+              <option value="desc">Descending (Z-A)</option>
+            </select>
+
+            <ul>
+              {getFavoritePets().map((pet) => (
+                <li key={pet.id}>
+                  {pet.nama} ({pet.jenis})
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+
+      case "jumlah":
+        return (
+          <section className="card">
+            <h2>Jumlah Hewan Berdasarkan Jenis</h2>
+            <ul>
+              {Object.entries(getPetCountByType()).map(([jenis, jumlah]) => (
+                <li key={jenis}>
+                  {jenis}: {jumlah}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+
+      case "palindrome":
+        return (
+          <section className="card">
+            <h2>Nama Hewan Palindrome</h2>
+            {getPalindromePets().length === 0 ? (
+              <p>Tidak ada nama hewan palindrome</p>
+            ) : (
+              <ul>
+                {getPalindromePets().map((pet) => (
+                  <li key={pet.nama}>
+                    {pet.nama} — Panjang Nama: {pet.panjangNama}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+
+      case "genap":
+        return (
+          <section className="card">
+            <h2>Bilangan Genap</h2>
+            <p>{getEvenNumbers(numbers).join(", ")}</p>
+            <p>Total: {sumEvenNumbers(numbers)}</p>
+          </section>
+        );
+
+      case "anagram":
+        return (
+          <section className="card">
+            <h2>Cek Anagram</h2>
+            <input
+              placeholder="Kata Pertama"
+              value={firstWord}
+              onChange={(e) => setFirstWord(e.target.value)}
+            />
+            <input
+              placeholder="Kata Kedua"
+              value={secondWord}
+              onChange={(e) => setSecondWord(e.target.value)}
+              style={{ marginLeft: "10px" }}
+            />
+            <p>
+              Hasil:{" "}
+              {firstWord && secondWord
+                ? isAnagram(firstWord, secondWord)
+                  ? "Anagram"
+                  : "Bukan Anagram"
+                : "-"}
+            </p>
+          </section>
+        );
+
+      case "json":
+        return (
+          <section className="card">
+            <h2>JSON Formatter Result</h2>
+            <pre className="json-box">
+              {JSON.stringify(formattedJson, null, 2)}
+            </pre>
+          </section>
+        );
+
+      default:
+        return null;
+    }
+  }
+
   return(
-    <div style={{ padding: '24px' }}>
-      <h1>Tes Front End Developer</h1>
-      <p>Data Hewan Peliharaan Esa</p>
+    
+    <div className='container'>
+      <header className='header'>
+        <h1>Tes Front End Developer</h1>
+        <p>Data Hewan Peliharaan Esa</p>
 
-      <hr />
+        <hr />
+      </header>
 
-      <button onClick={addNewPet} style={{ marginBottom: "16px" }}>
-        Tambah Hewan Baru
-      </button>
-
-      <button onClick={updatePersiaCat} style={{ marginBottom: "16px", marginLeft: "10px" }}>
-        Ganti Jenis Kucing
-      </button>
-
-      <div style={{ marginBottom: "16px" }}>
-        <label>Urutkan Hewan Kesayangan:</label>
-        <select 
-        value={sortOrder} 
-        onChange={(e) => setSortOrder(e.target.value)}>
-
-          <option value="asc">Ascending (A-Z)</option>
-          <option value="desc">Descending (Z-A)</option>
-
-        </select>
-      </div>
-
-      <h2>Daftar Hewan</h2>
-
-      <ul>
-        {pets.map((pet) =>(
-          <li key={pet.id} style={{ marginBottom: "12px" }}>
-            <strong>{pet.nama}</strong> ({pet.jenis})<br/>
-            Ras: {pet.ras}<br/>
-            Karakteristik: {pet.karakteristik}<br/>
-            Kesayangan: {pet.kesayangan ? "Ya" : "Tidak"}
-
-          </li>
+      <nav className="menu-horizontal">
+        {[
+          ["daftar", "Daftar Hewan"],
+          ["favorit", "Hewan Kesayangan"],
+          ["jumlah", "Jumlah per Jenis"],
+          ["palindrome", "Nama Palindrome"],
+          ["genap", "Bilangan Genap"],
+          ["anagram", "Cek Anagram"],
+          ["json", "JSON Formatter"],
+        ].map(([key, label]) => (
+          <button
+            key={key}
+            className={activeMenu === key ? "active" : ""}
+            onClick={() => setActiveMenu(key)}
+          >
+            {label}
+          </button>
         ))}
-      </ul>
+      </nav>
 
-      <h2>Hewan Kesayangan Esa</h2>
-
-      <ul>
-        {getFavoritePets().map((pet) => (
-          <li key={pet.id}>
-            {pet.nama} ({pet.jenis})
-          </li>
-        ))}
-      </ul>
-
-      <h2>Jumlah Hewan Berdasarkan Jenis</h2>
-
-      <ul>
-        {Object.entries(getPetCountByType()).map(([jenis, jumlah]) => (
-          <li key={jenis}>
-            {jenis}: {jumlah}
-          </li>
-        ))}
-      </ul>
-
-      <h2>Hewan dengan nama palindrome</h2>
-
-      {getPalindromePets().length === 0 ? (
-        <p>Tidak ada nama hewan palindrome</p>
-      ) : (
-        <ul>
-          {getPalindromePets().map((pet) => (
-            <li key={pet.nama}>
-              {pet.nama} - Panjang Nama: {pet.panjangNama}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <h2>Bilangan Genap</h2>
-
-      <p>
-        Bilangan Genap: {getEvenNumbers(numbers).join(", ")}
-      </p>
-
-      <p>
-        Total Bilangan Genap: {sumEvenNumbers(numbers)}
-      </p>
-
-      <h2>Cek Anagram</h2>
-
-      <input type="text" placeholder='Kata Pertama' value={firstWord} onChange={(e) => setFirstWord(e.target.value)} />
-      <input type="text" placeholder='Kata Kedua' value={secondWord} onChange={(e) => setSecondWord(e.target.value)} 
-      style={{ marginLeft: "10px" }}/>
-
-      <p>
-        Hasil:{" "}
-        {firstWord && secondWord ? isAnagram(firstWord, secondWord)
-          ? "Anagram": "Bukan Anagram": "_"}
-      </p>
-
-      <h2>JSON Formatter Result</h2>
-
-      <pre style={{ background: "#929191ff", padding: "16px" }}>
-        {JSON.stringify(formattedJson, null, 2)}
-      </pre>
+      {renderContent()}
 
     </div>
   );
@@ -175,6 +240,117 @@ function App() {
 export default App
 
 
+
+{/* <section className='card'>
+        <h2>Daftar Hewan</h2>
+
+        <div>
+          <button className='button' onClick={addNewPet} style={{ marginBottom: "16px" }}>
+            Tambah Hewan Baru
+          </button>
+
+          <button className='button' onClick={updatePersiaCat} style={{ marginBottom: "16px", marginLeft: "10px" }}>
+            Ganti Jenis Kucing
+          </button>
+        </div>
+
+        <ul className="pet-list">
+          {pets.map((pet) => (
+            <li key={pet.id} className="pet-item">
+              <div className="pet-title">
+                {pet.nama} ({pet.jenis})
+              </div>
+
+              <div className="pet-meta">
+                <div><strong>Ras:</strong> {pet.ras}</div>
+                <div><strong>Karakteristik:</strong> {pet.karakteristik}</div>
+                <div><strong>Kesayangan:</strong> {pet.kesayangan ? "Ya" : "Tidak"}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className='card'>
+        <div style={{ marginBottom: "16px" }}>
+            <label>Urutkan Hewan Kesayangan:</label>
+            <select 
+            value={sortOrder} 
+            onChange={(e) => setSortOrder(e.target.value)}>
+
+              <option value="asc">Ascending (A-Z)</option>
+              <option value="desc">Descending (Z-A)</option>
+
+            </select>
+          </div>
+
+          <h2>Hewan Kesayangan Esa</h2>
+
+          <ul>
+            {getFavoritePets().map((pet) => (
+              <li key={pet.id}>
+                {pet.nama} ({pet.jenis})
+              </li>
+            ))}
+          </ul>
+
+          <h2>Jumlah Hewan Berdasarkan Jenis</h2>
+
+          <ul>
+            {Object.entries(getPetCountByType()).map(([jenis, jumlah]) => (
+              <li key={jenis}>
+                {jenis}: {jumlah}
+              </li>
+            ))}
+          </ul>
+
+          <h2>Hewan dengan nama palindrome</h2>
+
+          {getPalindromePets().length === 0 ? (
+            <p>Tidak ada nama hewan palindrome</p>
+          ) : (
+            <ul>
+              {getPalindromePets().map((pet) => (
+                <li key={pet.nama}>
+                  {pet.nama} - Panjang Nama: {pet.panjangNama}
+                </li>
+              ))}
+            </ul>
+          )}
+      </section>
+
+      <section className='card'>
+        <h2>Bilangan Genap</h2>
+
+        <p>
+          Bilangan Genap: {getEvenNumbers(numbers).join(", ")}
+        </p>
+
+        <p>
+          Total Bilangan Genap: {sumEvenNumbers(numbers)}
+        </p>
+
+        <h2>Cek Anagram</h2>
+        <div style={{ marginBottom: "8px" }}>
+          <input type="text" placeholder='Kata Pertama' value={firstWord} onChange={(e) => setFirstWord(e.target.value)} />
+          <input type="text" placeholder='Kata Kedua' value={secondWord} onChange={(e) => setSecondWord(e.target.value)} 
+          style={{ marginLeft: "10px" }}/>
+        </div>
+
+        <p>
+          Hasil:{" "}
+          {firstWord && secondWord ? isAnagram(firstWord, secondWord)
+            ? "Anagram": "Bukan Anagram": "_"}
+        </p>    
+      </section>
+
+      <section className='card'>
+        <h2>JSON Formatter Result</h2>
+
+        <pre style={{ background: "#ffffffff", padding: "16px", color: "#000", overflow: "auto" }}>
+          {JSON.stringify(formattedJson, null, 2)}
+        </pre>
+      </section> */}
 
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
