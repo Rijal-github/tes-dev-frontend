@@ -1,3 +1,48 @@
+# Dokumentasi Penggunaan ChatGPT
+
+# Tujuan Penggunaan ChatGPT
+
+ChatGPT digunakan sebagai asisten teknis untuk membantu:
+
+- Perencanaan arsitektur aplikasi React
+- Klarifikasi kebutuhan soal
+- Validasi logika JavaScript
+- Review kesalahan sintaks dan best practice
+
+# ChatGPT digunakan pada hal-hal berikut ini:
+
+1. perencanaan awal
+    - Menentukan struktur folder React
+    - Menentukan pendekatan state management
+    - Memetakan soal ke implementasi frontend
+2. Validasi Logika JavaScript
+    - Manipulasi array (map, filter, reduce)
+    - Sorting data ascending & descending
+    - Pengecekan palindrome
+    - Pengecekan anagram
+    - Transformasi JSON bertingkat (nested aggregation)
+3. Debugging
+    - Membantu mengidentifikasi error React rendering
+    - Validasi penggunaan export/import ES Modules
+    - Penjelasan error console
+4. Best Practice
+    - Immutable state update
+    - Pemisahan logic ke folder utils
+    - Penulisan fungsi reusable dan clean
+
+# Berikut prompt yang digunakan selama pengerjaan
+1. Tolong bantu saya merencanakan pengerjaan case Front End Developer menggunakan React.js
+
+2. Apakah pendekatan state dan struktur data ini sudah sesuai best practice React?
+
+3. Kenapa filter data React saya tidak tampil di UI, apakah ada kesalahan di map()?
+
+4. Bagaimana cara mentransformasi JSON bertingkat menggunakan reduce agar sesuai expectation?
+
+5. Apa penyebab error export/import ES Module di React Vite?
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
