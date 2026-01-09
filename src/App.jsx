@@ -79,20 +79,41 @@ function App() {
               <button style={{ marginLeft: "10px" }} onClick={updatePersiaCat}>Ganti Jenis Kucing</button>
             </div>
 
-            <ul className="pet-list">
-              {pets.map((pet) => (
-                <li key={pet.id} className="pet-item">
-                  <div className="pet-title">
-                    {pet.nama} ({pet.jenis})
-                  </div>
-                  <div className="pet-meta">
-                    <div><strong>Ras:</strong> {pet.ras}</div>
-                    <div><strong>Karakteristik:</strong> {pet.karakteristik}</div>
-                    <div><strong>Kesayangan:</strong> {pet.kesayangan ? "Ya" : "Tidak"}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="table-wrapper">
+              <table className="pet-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Hewan</th>
+                    <th>Jenis</th>
+                    <th>Ras Hewan</th>
+                    <th>Karakteristik</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {pets.map((pet, index) => (
+                    <tr key={pet.id}>
+                      <td>{index + 1}</td>
+                      <td>{pet.nama}</td>
+                      <td>{pet.jenis}</td>
+                      <td>{pet.ras}</td>
+                      <td>{pet.karakteristik}</td>
+                      {/* <td>{pet.kesayangan ? "Kesayangan" : "Biasa"}</td> */}
+                      <td>
+                        {pet.kesayangan ? (
+                          <span className="badge-favorite">Kesayangan</span>
+                        ) : (
+                          <span className="badge-biasa">Biasa</span>
+                          // "Biasa"
+                        )}
+                     </td>
+                   </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         );
 
@@ -109,44 +130,98 @@ function App() {
               <option value="desc">Descending (Z-A)</option>
             </select>
 
-            <ul>
-              {getFavoritePets().map((pet) => (
-                <li key={pet.id}>
-                  {pet.nama} ({pet.jenis})
-                </li>
-              ))}
-            </ul>
+            <div className="table-wrapper">
+              <table className="pet-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Hewan</th>
+                    <th>Jenis</th>
+                    <th>Ras Hewan</th>
+                    <th>Karakteristik</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {getFavoritePets().map((pet, index) => (
+                    <tr key={pet.id}>
+                      <td>{index + 1}</td>
+                      <td>{pet.nama}</td>
+                      <td>{pet.jenis}</td>
+                      <td>{pet.ras}</td>
+                      <td>{pet.karakteristik}</td>
+                      <td>
+                        <span className="badge-favorite">Kesayangan</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         );
 
-      case "jumlah":
-        return (
-          <section className="card">
-            <h2>Jumlah Hewan Berdasarkan Jenis</h2>
-            <ul>
-              {Object.entries(getPetCountByType()).map(([jenis, jumlah]) => (
-                <li key={jenis}>
-                  {jenis}: {jumlah}
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
+        case "jumlah":
+          return (
+            <section className="card">
+              <h2>Jumlah Hewan Berdasarkan Jenis</h2>
+
+              <div className="table-wrapper">
+                <table className="pet-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Jenis Hewan</th>
+                      <th>Jumlah</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {Object.entries(getPetCountByType()).map(
+                      ([jenis, jumlah], index) => (
+                        <tr key={jenis}>
+                          <td>{index + 1}</td>
+                          <td>{jenis}</td>
+                          <td>{jumlah}</td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          );
 
       case "palindrome":
         return (
           <section className="card">
             <h2>Nama Hewan Palindrome</h2>
+
             {getPalindromePets().length === 0 ? (
               <p>Tidak ada nama hewan palindrome</p>
             ) : (
-              <ul>
-                {getPalindromePets().map((pet) => (
-                  <li key={pet.nama}>
-                    {pet.nama} — Panjang Nama: {pet.panjangNama}
-                  </li>
-                ))}
-              </ul>
+              <div className="table-wrapper">
+                <table className="pet-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Hewan</th>
+                      <th>Panjang Nama</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {getPalindromePets().map((pet, index) => (
+                      <tr key={pet.nama}>
+                        <td>{index + 1}</td>
+                        <td>{pet.nama}</td>
+                        <td>{pet.panjangNama}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </section>
         );
@@ -352,32 +427,29 @@ export default App
         </pre>
       </section> */}
 
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+      // case "daftar":
+      //   return (
+      //     <section className="card">
+      //       <h2>Daftar Hewan</h2>
 
-// const [count, setCount] = useState(0)
+      //       <div className="button-group">
+      //         <button onClick={addNewPet}>Tambah Hewan Baru</button>
+      //         <button style={{ marginLeft: "10px" }} onClick={updatePersiaCat}>Ganti Jenis Kucing</button>
+      //       </div>
 
-// return (
-//   <>
-//     <div>
-//       <a href="https://vite.dev" target="_blank">
-//         <img src={viteLogo} className="logo" alt="Vite logo" />
-//       </a>
-//       <a href="https://react.dev" target="_blank">
-//         <img src={reactLogo} className="logo react" alt="React logo" />
-//       </a>
-//     </div>
-//     <h1>Vite + React</h1>
-//     <div className="card">
-//       <button onClick={() => setCount((count) => count + 1)}>
-//         count is {count}
-//       </button>
-//       <p>
-//         Edit <code>src/App.jsx</code> and save to test HMR
-//       </p>
-//     </div>
-//     <p className="read-the-docs">
-//       Click on the Vite and React logos to learn more
-//     </p>
-//   </>
-// )
+      //       <ul className="pet-list">
+      //         {pets.map((pet) => (
+      //           <li key={pet.id} className="pet-item">
+      //             <div className="pet-title">
+      //               {pet.nama} ({pet.jenis})
+      //             </div>
+      //             <div className="pet-meta">
+      //               <div><strong>Ras:</strong> {pet.ras}</div>
+      //               <div><strong>Karakteristik:</strong> {pet.karakteristik}</div>
+      //               <div><strong>Kesayangan:</strong> {pet.kesayangan ? "Ya" : "Tidak"}</div>
+      //             </div>
+      //           </li>
+      //         ))}
+      //       </ul>
+      //     </section>
+      //   );
